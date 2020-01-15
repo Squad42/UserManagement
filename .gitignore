@@ -1,3 +1,32 @@
+## USER ADDED GITIGNORES
+
+userManagement/config_environment.py
+userManagement/__pycache__/
+
+## ENV / IDE GITIGNORES
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+
+
+# Pytest stuff
+.pytest_cache
+userManagement/.pytest_cache
+userManagement/tests/.pytest_cache
+__pycache__
+userManagement/__pycache__
+userManagement/tests/__pycache__
+
+
+
+## PYTHON SPECIFIC GITIGNORE
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
