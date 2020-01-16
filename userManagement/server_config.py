@@ -59,26 +59,17 @@ class DevelopmentConfig(Config):
     COMMENTSANDLIKES_SERVICE_ADDRESS = "192.168.2.105"
 
     # DATABASE CONFIG
-    # DB_USER = os.environ["POSTGRES_USER"]
-    # DB_PASSWORD = os.environ["POSTGRES_PASSWORD"]
-    # DB_HOST_IP = os.environ["POSTGRES_HOST"]
-    # DB_HOST_PORT = os.environ["POSTGRES_PORT"]
-    # DB_NAME = os.environ["POSTGRES_DB"]
-
-    ## LOCAL DATABASE TESTING
-    DB_USER = "test_user"
-    DB_PASSWORD = "password1"
-    DB_HOST_IP = "localhost"
-    DB_HOST_PORT = 5432
-    # TODO ::  CHANGE THE LINK OF DATABASE
-    DB_NAME = "db_catalogue_example"
-    DB_INITIALIZE = "True"
+    DB_USER = os.environ["POSTGRES_USER"]
+    DB_PASSWORD = os.environ["POSTGRES_PASSWORD"]
+    DB_HOST_IP = os.environ["POSTGRES_HOST"]
+    DB_HOST_PORT = os.environ["POSTGRES_PORT"]
+    DB_NAME = os.environ["POSTGRES_DB"]
 
     DATABASE_CONNECTION_URI = "postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}".format(
         user=DB_USER, password=DB_PASSWORD, host=DB_HOST_IP, port=DB_HOST_PORT, db=DB_NAME
     )
 
-    # DB_INITIALIZE = os.environ["POSTGRES_INITIALIZE"]
+    DB_INITIALIZE = os.environ["POSTGRES_INITIALIZE"]
 
 
 class TestingConfig(Config):
