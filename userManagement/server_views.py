@@ -70,6 +70,43 @@ def login():
     )
 
 
+@app.route("/login_credentials/<username>/<password>")
+def login_credentials(username, password):
+
+    auth = request.authorization
+
+    if not username or not password:
+        return make_response(
+            "Could not verify", 401, {"WWW-Authenticate": 'Basic realm="Login required!"'}
+        )
+
+    user = Users.query.filter_by(username=username).first()
+
+    if not user:
+        return make_response(
+            "Invalid credentials!", 401, {"WWW-Authenticate": 'Basic realm="Login required!"'}
+        )
+
+    # TODO: REMOVE SECOND CHECK - FOR SAFETY REASONS - devtest allows no hash
+    if check_password_hash(user.password, password) or user.password == password:
+        token = jwt.encode(
+            {
+                "username": username,
+                "role": "basic",
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=3600),
+            },
+            app.config["SECRET_KEY"],
+        )
+        session["jwt_token"] = token
+        session["logged_in_user"] = user.username
+
+        return jsonify({"token": token.decode("UTF-8")}), 200
+
+    return make_response(
+        "Could not verify!", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
+    )
+
+
 @app.route("/users", methods=["GET"])
 # def get_all_users(current_user):
 def get_all_users():
