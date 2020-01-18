@@ -1,11 +1,11 @@
+import json
+from flask import Flask, jsonify, request, make_response, session, g
 from userManagement.server import app
 from userManagement.models import Users
 from userManagement.manage_db import get_all, add_instance, delete_instance, edit_instance
-from flask import Flask, jsonify, request, make_response, session, g
-import jwt
-import json
-import datetime
 from functools import wraps
+import jwt
+import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 

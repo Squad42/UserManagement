@@ -8,9 +8,9 @@ class Users(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True)
-    full_name = db.Column(db.String(50))
-    password = db.Column(db.String(80))
+    username = db.Column(db.String(10), unique=True)
+    full_name = db.Column(db.String(20))
+    password = db.Column(db.String(20))
     user_since = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     admin = db.Column(db.Boolean)
 

@@ -3,6 +3,7 @@ from pathlib import Path
 
 # APP_ROOT = Path(__file__).resolve().parent
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 # DEFAULT_UPLOAD_FOLDER = Path("media/users/")
 # DEFAULT_DOWNLOADS_FOLDER = Path("media/downloads/")
 
@@ -45,10 +46,6 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SECRET_KEY = os.environ.get("FLASK_SECRET_KEY")
     PORT = 5000
-
-    # upload restrictions
-    ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg"])
-    FILE_SIZE_LIMIT = 25000  # dropbox allows 150 MB, before streaming
 
     # MICROSERVICES NETWORK CONFIG
     UPLOAD_SERVICE_ADDRESS = "192.168.2.100"

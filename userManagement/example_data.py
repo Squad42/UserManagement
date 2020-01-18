@@ -10,12 +10,11 @@ def db_load_example_data(app, db):
         Users("user", "test user", "user", "2020-01-15T23:01:03Z", False),
     ]
 
-    with app.app_context():
-
-        try:
+    try:
+        with app.app_context():
             for usr in users_list:
-                db.session.add(usr)
+                if not Users.query.filter_by(username=usr.username).first():
+                    db.session.add(usr)
             db.session.commit()
-        except IntegrityError as e:
-            app.logger.info("Integrity error: {}".format(e.args[0]))
-
+    except IntegrityError as e:
+        app.logger.info("Integrity error: {}".format(e.args[0]))

@@ -1,5 +1,4 @@
 from flask import Flask
-import os
 from userManagement.models import db
 from userManagement.example_data import db_load_example_data
 
