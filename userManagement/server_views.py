@@ -33,6 +33,16 @@ def jwt_token_required(func):
     return decorated
 
 
+@app.route("/logout", methods=["GET"])
+def logout():
+
+    try:
+        [session.pop(key) for key in list(session.keys())]
+        return json.dumps("User logged out"), 200
+    except:
+        return json.dumps("User log out attempt failed!"), 304
+
+
 @app.route("/login")
 def login():
 
@@ -70,10 +80,13 @@ def login():
     )
 
 
-@app.route("/login_credentials/<username>/<password>")
-def login_credentials(username, password):
+@app.route("/login_credentials_check", methods=["POST"])
+def login_credentials():
 
-    auth = request.authorization
+    data = request.json
+
+    username = data["username"]
+    password = data["password"]
 
     if not username or not password:
         return make_response(
@@ -99,7 +112,7 @@ def login_credentials(username, password):
         )
         session["jwt_token"] = token
         session["logged_in_user"] = user.username
-
+        app.logger.info("USER LOGGED IN SUCCESSUFLY %s", session["logged_in_user"])
         return jsonify({"token": token.decode("UTF-8")}), 200
 
     return make_response(
@@ -150,23 +163,27 @@ def create_user():
     username = data["username"]
     full_name = data["full_name"]
     password = data["password"]
-    # user_since = data["user_since"]
-    # admin = data["admin"]
     user_since = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
     admin = False
 
     hashed_password = generate_password_hash(password, method="sha256")
 
-    add_instance(
-        Users,
-        username=username,
-        full_name=full_name,
-        password=hashed_password,
-        user_since=user_since,
-        admin=admin,
-    )
+    if not username or not password:
+        json.dumps("ERROR: Insufficent credentials!"), 403
 
-    return json.dumps("Added"), 200
+    if not Users.query.filter_by(username=username).first():
+        add_instance(
+            Users,
+            username=username,
+            full_name=full_name,
+            password=hashed_password,
+            user_since=user_since,
+            admin=admin,
+        )
+
+        return json.dumps("Added"), 200
+
+    return json.dumps("ERROR: User with provided username already exists!"), 403
 
 
 @app.route("/users/promote/<username>", methods=["PATCH"])
