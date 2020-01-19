@@ -112,8 +112,8 @@ def login_credentials():
         )
         session["jwt_token"] = token
         session["logged_in_user"] = user.username
-        app.logger.info("USER LOGGED IN SUCCESSUFLY %s", session["logged_in_user"])
-        return jsonify({"token": token.decode("UTF-8")}), 200
+
+        return jsonify({"jwt_token": token.decode("UTF-8"), "logged_in_user": user.username}), 200
 
     return make_response(
         "Could not verify!", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
