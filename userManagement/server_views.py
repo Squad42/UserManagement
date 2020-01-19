@@ -33,7 +33,7 @@ def jwt_token_required(func):
     return decorated
 
 
-@app.route("/logout", methods=["GET"])
+@app.route("/users/logout", methods=["GET"])
 def logout():
 
     try:
@@ -43,7 +43,7 @@ def logout():
         return json.dumps("User log out attempt failed!"), 304
 
 
-@app.route("/login")
+@app.route("/users/login")
 def login():
 
     auth = request.authorization
@@ -80,7 +80,7 @@ def login():
     )
 
 
-@app.route("/login_credentials_check", methods=["POST"])
+@app.route("/users/login_credentials_check", methods=["POST"])
 def login_credentials():
 
     data = request.json
