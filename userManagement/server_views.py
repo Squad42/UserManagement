@@ -221,3 +221,57 @@ def user():
         return session["logged_in_user"]
 
     return "Unknown user"
+
+@app.route("/health/liveness")
+def liveness():
+    healthStatus = None
+    try:
+        if "consul_server" in app.config and app.config["consul_server"] is not None:
+            index = None
+            index, data = app.config["consul_server"].kv.get("userManagement/alive", index=index)
+            if data is not None:
+                healthStatus = data["Value"]
+            else:
+                healthStatus = "true"
+        else:
+            healthStatus = "true"
+    except:
+        healthStatus = "false"        
+
+    if "false" in str(healthStatus).lower():
+        response = jsonify(
+        service_status="FAIL",
+        service_code=503)
+        return response, 503
+    else:
+        response = jsonify(
+        service_status="PASS",
+        service_code=200)
+        return response, 200
+    
+@app.route("/health/readiness")
+def readiness():
+    healthStatus = None
+    try:
+        if "consul_server" in app.config and app.config["consul_server"] is not None:
+            index = None
+            index, data = app.config["consul_server"].kv.get("userManagement/ready", index=index)
+            if data is not None:
+                healthStatus = data["Value"]
+            else:
+                healthStatus = "true"
+        else:
+            healthStatus = "true"
+    except:
+        healthStatus = "false"         
+
+    if "false" in str(healthStatus).lower():
+        response = jsonify(
+        service_status="FAIL",
+        service_code=503)
+        return response, 503
+    else:
+        response = jsonify(
+        service_status="PASS",
+        service_code=200)
+        return response, 200  
