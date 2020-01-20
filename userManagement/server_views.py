@@ -25,6 +25,7 @@ def jwt_token_required(func):
             data = jwt.decode(token, app.config["SECRET_KEY"])
             g.user = data
             app.logger.info("Logged in user: %s", g.user["username"])
+            app.config["LOGGER"].info("Logged in user: %s", g.user["username"])
         except:
             return jsonify({"message": "Token is invalid!"}), 403
 
@@ -275,3 +276,7 @@ def readiness():
         service_status="PASS",
         service_code=200)
         return response, 200  
+    
+@app.route("/", methods=["GET"])
+def index():
+    return "All is well..."    
